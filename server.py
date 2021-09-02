@@ -35,15 +35,14 @@ def broadcast():
         # if count == 0:
         #    sleep(0.1)
 
-        if messages:
-            print(f'List: {messages}')
+        while messages:
+            print(f'Number of messages: {len(messages)}')
             message = messages.pop(0)
-            print(f'Message: {message}')
             for client in clients:
                 client.send(message)
-            # sleep(0.01)
-        else:
-            sleep(0.1)
+            #sleep(0.01)
+        # else:
+        #     sleep(0.1)
 
 
 # Handling Messages From Clients
@@ -58,20 +57,21 @@ def handle(client):
     print(f'Nickname is {nickname}')
     messages.append(f'{nickname} joined the chat!\n'.encode())
 
-    client.send('Connected to server!'.encode())
+    client.send('Connected to server!\n'.encode())
 
     while True:
         try:
             # Broadcasting Messages
             message = client.recv(1024)
-            messages.append(message+'\n')
+            messages.append(message + '\n'.encode())
+            sleep(1)
         except:
             # Removing And Closing Clients
             index = clients.index(client)
             clients.remove(client)
             client.close()
             nickname = nicknames[index]
-            messages.append(f'{nickname} left the chat!'.encode())
+            messages.append(f'{nickname} left the chat!\n'.encode())
             nicknames.remove(nickname)
             break
 
