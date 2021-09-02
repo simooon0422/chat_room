@@ -36,9 +36,12 @@ def broadcast():
         #    sleep(0.1)
 
         if messages:
+            print(f'List: {messages}')
             message = messages.pop(0)
+            print(f'Message: {message}')
             for client in clients:
                 client.send(message)
+            # sleep(0.01)
         else:
             sleep(0.1)
 
@@ -53,7 +56,7 @@ def handle(client):
 
     # Print And Broadcast Nickname
     print(f'Nickname is {nickname}')
-    messages.append(f'{nickname} joined the chat!'.encode())
+    messages.append(f'{nickname} joined the chat!\n'.encode())
 
     client.send('Connected to server!'.encode())
 
@@ -61,7 +64,7 @@ def handle(client):
         try:
             # Broadcasting Messages
             message = client.recv(1024)
-            messages.append(message)
+            messages.append(message+'\n')
         except:
             # Removing And Closing Clients
             index = clients.index(client)

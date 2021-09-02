@@ -30,7 +30,8 @@ class ChatClient:
                 if message == 'NICK':
                     self.client.send(self.nickname.encode())
                 else:
-                    print(message)
+                    print(message, end='')
+
             except:
                 # Close Connection When Error
                 print("An error occurred!")
@@ -44,7 +45,13 @@ class ChatClient:
             self.client.send(message.encode())
 
 
-ChatClient('127.0.0.1', 8081, 'admin').run_client()
+# ChatClient('127.0.0.1', 8081, 'nick').run_client()
+def chat_client(clients_number=1):
+    for index in range(clients_number):
+        ChatClient('127.0.0.1', 8081, f'nick_{str(index)}').run_client()
+
+
+chat_client(10)
 
 # # Choosing Nickname
 # nickname = input("Choose your nickname: ")
