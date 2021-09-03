@@ -20,29 +20,12 @@ messages = []
 # Sending Messages To All Connected Clients
 def broadcast():
     while True:
-        # while messages:
-        #     message = messages.pop(0)
-        #     for client in clients:
-        #         client.send(message)
-        # sleep(0.1)
-
-        # count = len(messages)
-        # for client in clients:
-        #     for i in range(count):
-        #         client.send(messages[i])
-        # for i in range(count):
-        #     messages.pop(0)
-        # if count == 0:
-        #    sleep(0.1)
-
         while messages:
             print(f'Number of messages: {len(messages)}')
             message = messages.pop(0)
             for client in clients:
                 client.send(message)
-            #sleep(0.01)
-        # else:
-        #     sleep(0.1)
+        sleep(0.1)
 
 
 # Handling Messages From Clients
