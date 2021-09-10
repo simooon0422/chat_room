@@ -6,7 +6,6 @@ import string
 from time import sleep
 import tkinter
 import tkinter.scrolledtext
-from tkinter import messagebox
 
 
 class ChatClient:
@@ -17,21 +16,18 @@ class ChatClient:
 
     def run_client(self):
         """Starting client"""
-        # Getting Data For Connection
-        self._login_gui()
         # Connecting To Server
-        # self.client.connect((self.host, self.port))
+        self._run_login_gui()
 
         # Starting Threads
         receive_thread = threading.Thread(target=self._receive, daemon=True)
         receive_thread.start()
 
+        # Starting Client GUI
         self._run_client_gui()
 
-        # simulation_thread = threading.Thread(target=self._simulate_chat)
-        # simulation_thread.start()
 
-    def _login_gui(self):
+    def _run_login_gui(self):
         self.data_window = tkinter.Tk()
 
         self.data_window.geometry('200x300')
