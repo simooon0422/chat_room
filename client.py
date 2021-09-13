@@ -26,38 +26,42 @@ class ChatClient:
         # Starting Client GUI
         self._run_client_gui()
 
-
     def _run_login_gui(self):
         self.data_window = tkinter.Tk()
 
-        self.data_window.geometry('200x300')
+        self.data_window.geometry('250x350')
+
+        # Specify Grid
+        tkinter.Grid.columnconfigure(self.data_window, 0, weight=1)
+        for i in range(8):
+            tkinter.Grid.rowconfigure(self.data_window, i, weight=1)
 
         self.data_window.title('Chat Room')
 
         self.host_label = tkinter.Label(self.data_window, text='Host', font=('Arial', 12, 'bold'), padx=20, pady=10)
-        self.host_label.pack()
-        self.host_entry = tkinter.Text(self.data_window, height=1, width=10, padx=20, pady=5)
+        self.host_label.grid(row=0, column=0, sticky="nsew", padx=40)
+        self.host_entry = tkinter.Text(self.data_window, height=1, width=15)
         self.host_entry.insert('end', '127.0.0.1')
-        self.host_entry.pack()
+        self.host_entry.grid(row=1, column=0, sticky="nsew", padx=40)
 
         self.port_label = tkinter.Label(self.data_window, text='Port', font=('Arial', 12, 'bold'), padx=20, pady=10)
-        self.port_label.pack()
-        self.port_entry = tkinter.Text(self.data_window, height=1, width=10, padx=20, pady=5)
+        self.port_label.grid(row=2, column=0, sticky="nsew", padx=40)
+        self.port_entry = tkinter.Text(self.data_window, height=1, width=15)
         self.port_entry.insert('end', '8081')
-        self.port_entry.pack()
+        self.port_entry.grid(row=3, column=0, sticky="nsew", padx=40)
 
         self.nick_label = tkinter.Label(self.data_window, text='Nickname', font=('Arial', 12, 'bold'), padx=20, pady=10)
-        self.nick_label.pack()
-        self.nick_entry = tkinter.Text(self.data_window, height=1, width=10, padx=20, pady=5)
+        self.nick_label.grid(row=4, column=0, sticky="nsew", padx=40)
+        self.nick_entry = tkinter.Text(self.data_window, height=1, width=15)
         self.nick_entry.insert('end', 'nickname')
-        self.nick_entry.pack()
+        self.nick_entry.grid(row=5, column=0, sticky="nsew", padx=40)
 
         self.connect_button = tkinter.Button(self.data_window,
                                              text='Connect',
                                              command=self._connect,
                                              font=('Arial', 18),
                                              )
-        self.connect_button.pack()
+        self.connect_button.grid(row=6, column=0, sticky="nsew", padx=40, pady=10)
 
         self.invalid_data_label = tkinter.Label(self.data_window,
                                                 text='Invalid Data',
@@ -78,7 +82,7 @@ class ChatClient:
             self.client.connect((self.host, self.port))
             self.data_window.destroy()
         except (ValueError, socket.gaierror):
-            self.invalid_data_label.pack()
+            self.invalid_data_label.grid(row=7, column=0, sticky="nsew", padx=40)
 
     def _stop_login_gui(self):
         self.data_window.destroy()
@@ -88,19 +92,26 @@ class ChatClient:
         """Creating GUI"""
         self.window = tkinter.Tk()
 
+        self.window.geometry('600x600')
+
+        # Specify Grid
+        tkinter.Grid.columnconfigure(self.window, 0, weight=1)
+        for i in range(5):
+            tkinter.Grid.rowconfigure(self.window, i, weight=1)
+
         self.window.title('Chat Room')
 
         self.chat_label = tkinter.Label(self.window, text='Chat', font=('Arial', 24, 'bold'), padx=20, pady=10)
-        self.chat_label.pack()
+        self.chat_label.grid(row=0, column=0, sticky="nsew", padx=40)
 
         self.text_area = tkinter.scrolledtext.ScrolledText(self.window, padx=20, pady=10, state='disabled')
-        self.text_area.pack()
+        self.text_area.grid(row=1, column=0, sticky="nsew", padx=40)
 
         self.message_label = tkinter.Label(self.window, text='Message', font=('Arial', 24, 'bold'), padx=20, pady=10)
-        self.message_label.pack()
+        self.message_label.grid(row=2, column=0, sticky="nsew", padx=40)
 
-        self.entry = tkinter.Text(self.window, height=3, padx=20, pady=5)
-        self.entry.pack()
+        self.chat_entry = tkinter.Text(self.window, height=3, padx=20, pady=5)
+        self.chat_entry.grid(row=3, column=0, sticky="nsew", padx=40)
 
         self.send_button = tkinter.Button(self.window,
                                           text='SEND',
@@ -108,7 +119,7 @@ class ChatClient:
                                           font=('Arial', 24),
                                           padx=20,
                                           pady=10)
-        self.send_button.pack()
+        self.send_button.grid(row=4, column=0, sticky="nsew", padx=200, pady=20)
 
         self.gui_done = True
 
@@ -147,9 +158,9 @@ class ChatClient:
 
     def _write(self):
         """Writing messages"""
-        message = f'{self.nickname}: {self.entry.get("1.0", "end")}'.strip()
+        message = f'{self.nickname}: {self.chat_entry.get("1.0", "end")}'.strip()
         self.client.send(message.encode())
-        self.entry.delete('1.0', 'end')
+        self.chat_entry.delete('1.0', 'end')
 
     def _simulate_chat(self):
         """Writing random messages"""
@@ -166,11 +177,4 @@ class ChatClient:
         return str(result_str)
 
 
-# ChatClient('127.0.0.1', 8081, 'nick').run_client()
-# def chat_client(clients_number=1):
-#     for index in range(clients_number):
-#         ChatClient('127.0.0.1', 8081, f'nick_{str(index)}').run_client()
-
-
-# chat_client()
 ChatClient().run_client()
